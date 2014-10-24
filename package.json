@@ -1,0 +1,22 @@
+{
+  "name": "garage-door",
+  "version": "0.0.0",
+  "description": "Garage door monitor and opener",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dceddia/garage-door.git"
+  },
+  "author": "Dave Ceddia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dceddia/garage-door/issues"
+  },
+  "homepage": "https://github.com/dceddia/garage-door",
+  "dependencies": {
+    "express": "~4.10.0"
+  }
+}
