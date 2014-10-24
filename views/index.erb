@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Garage Door</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular.min.js"></script>
+    <script src="app.js"></script>
+  </head>
+
+  <body ng-app="GarageDoor" ng-controller="GarageCtrl">
+      <h1>Garage Door</h1>
+      <img ng-src="{{doorImage}}"/>
+      <h2>is <span ng-class="doorState">{{ doorState | uppercase }}</span></h2>
+  </body>
+</html>
