@@ -1,5 +1,7 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1 Garage Door
+  i(class='status-icon fa' ng-class='[statusIcon(), doorState]')
+  h2 is 
+    span(ng-class='doorState') {{ doorState | uppercase }}
