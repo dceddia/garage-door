@@ -10,4 +10,13 @@ router.get('/', function(req, res) {
   });
 });
 
+
+// Tell the client when the door changes state
+io.on('connection', function(socket) {
+  door.on_change(function(val) {
+    socket.emit('change', val);
+  });
+});
+
+
 module.exports = router;

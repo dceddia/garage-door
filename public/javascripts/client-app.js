@@ -1,9 +1,12 @@
-var app = angular.module('GarageDoor', []);
+var app = angular.module('GarageDoor', ['btford.socket-io']);
 
-app.controller("GarageCtrl", function($scope) {
+app.factory('doorSocket', function(socketFactory) {
+  return socketFactory();
+});
+
+app.controller("GarageCtrl", function($scope, doorSocket) {
   $scope.doorState = "unknown";
-  $scope.doorState = "open";
-  $scope.doorState = "closed";
+
   $scope.statusIcon = function() {
     switch($scope.doorState) {
       case 'open':
@@ -13,4 +16,9 @@ app.controller("GarageCtrl", function($scope) {
     }
     return "fa-question";
   };
+
+  // When the door state changes, the server will send us an update
+  doorSocket.on('change', function(newDoorState) {
+    $scope.doorState = newDoorState;
+  });
 });
