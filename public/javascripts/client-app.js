@@ -21,4 +21,9 @@ app.controller("GarageCtrl", function($scope, doorSocket) {
   doorSocket.on('change', function(newDoorState) {
     $scope.doorState = newDoorState;
   });
+
+  // Ask the server for the current state
+  $http.get('/state', function(state) {
+    $scope.doorState = state;
+  });
 });
