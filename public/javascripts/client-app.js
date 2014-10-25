@@ -4,7 +4,7 @@ app.factory('doorSocket', function(socketFactory) {
   return socketFactory();
 });
 
-app.controller("GarageCtrl", function($scope, doorSocket) {
+app.controller("GarageCtrl", function($scope, doorSocket, $http) {
   $scope.doorState = "unknown";
 
   $scope.statusIcon = function() {
@@ -22,8 +22,8 @@ app.controller("GarageCtrl", function($scope, doorSocket) {
     $scope.doorState = newDoorState;
   });
 
-  // Ask the server for the current state
-  $http.get('/state', function(state) {
-    $scope.doorState = state;
+  // Ask the server for the current door status
+  $http.get('/status').then(function(res) {
+    $scope.doorState = res.data;
   });
 });
