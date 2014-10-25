@@ -5,7 +5,9 @@ var door = require('door-ctrl');
 door.init();
 
 router.get('/', function(req, res) {
-  res.send('hi');
+  door.state().then(function(state) {
+    res.send(state);
+  });
 });
 
 module.exports = router;
