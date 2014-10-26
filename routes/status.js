@@ -10,6 +10,11 @@ router.get('/', function(req, res) {
   });
 });
 
+router.get('/change', function(req, res) {
+  door.push();
+  res.status(200).end();
+});
+
 
 // Tell the client when the door changes state
 io.on('connection', function(socket) {
