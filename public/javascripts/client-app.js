@@ -32,6 +32,10 @@ app.controller("GarageCtrl", function($scope, GarageDoor) {
     return $scope.withState($scope.doorState, "Close It", "Open It", "Trigger It");
   };
 
+  $scope.buttonClass = function() {
+    return $scope.withState($scope.doorState, "btn-b", "btn-c", "btn-a");
+  }
+
   $scope.changeDoorState = function() {
     $scope.withState($scope.doorState, GarageDoor.close, GarageDoor.open, GarageDoor.trigger);
   };

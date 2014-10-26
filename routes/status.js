@@ -10,7 +10,7 @@ router.get('/', function(req, res) {
   });
 });
 
-router.get('/change', function(req, res) {
+router.post('/change', function(req, res) {
   door.push();
   res.status(200).end();
 });
