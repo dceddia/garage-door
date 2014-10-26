@@ -31,8 +31,9 @@ router.post('/change', function(req, res) {
 function startTimer(callback, duration) {
   return setInterval(callback, duration);
 }
-function stopTimer(handle) {
-  clearInterval(handle);
+function stopTimer(timerName) {
+  clearInterval(timers[timerName]);
+  timers[timerName] = null;
 }
 
 // Tell the client when the door changes state
@@ -45,20 +46,22 @@ io.on('connection', function(socket) {
 
 // Keep track of state changes for ourselves too
 door.on('change', function(oldValue, newValue) {
-  // Changing to a valid state ('closed') cancels old timers
+  // Changing to a valid state ('closed') cancels all timers
   if(newValue === 'closed') {
     Object.keys(timers).forEach(function(timerName) {
-      stopTimer(timers[timerName]);
+      stopTimer(timerName);
     });
     return;
   }
 
   // If we enter any state besides 'closed', start a timer
   // They have predefined limits on how long they're allowed to last before alerts go out
-  timer[newValue] = (function() {
-      console.log('door in', newValue, 'state too long!');
-    }, timeBeforeAlert[newValue]);
-  }
+  timer[newValue] = startTimer(function() {
+    console.log('door in', newValue, 'state too long!');
+  }, timeBeforeAlert[newValue]);
+
+  // End the timer for the previous state
+  stopTimer(oldValue);
 
   console.log('note to self: state changed:', oldValue, '->', newValue);
 });
