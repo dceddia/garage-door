@@ -28,6 +28,7 @@ var _read = function(file, fn) {
 			err.action = 'read';
 			logError(err);
 		} else {
+      if(this.invert) data = 1 - data;
 			if(typeof fn === "function") fn(data);
 			else logMessage("value: ", data);
 		}
@@ -88,6 +89,9 @@ var GPIO = function(headerNum, opts) {
 	var interval = opts.interval;
 	if(typeof interval !== 'number') interval = 100;
 	this.interval = interval;
+
+  // Flip the value after reading it. Only really makes sense with direction 'in'
+  this.invert = opts.invert;
 
 	this.headerNum = headerNum;
 	this.value = 0;
