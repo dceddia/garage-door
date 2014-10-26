@@ -56,7 +56,7 @@ door.on('change', function(oldValue, newValue) {
 
   // If we enter any state besides 'closed', start a timer
   // They have predefined limits on how long they're allowed to last before alerts go out
-  timer[newValue] = startTimer(function() {
+  timers[newValue] = startTimer(function() {
     console.log('door in', newValue, 'state too long!');
   }, timeBeforeAlert[newValue]);
 
