@@ -5,14 +5,12 @@ var door = require('door-ctrl');
 door.init();
 
 router.get('/', function(req, res) {
-  door.state().then(function(state) {
-    res.send(state);
-  });
+  res.status(200).end(door.state());
 });
 
 router.post('/change', function(req, res) {
   if(req.session.isLoggedIn) {
-    door.push();
+    door.activate();
     res.status(200).end();
   } else {
     res.status(403).end();
