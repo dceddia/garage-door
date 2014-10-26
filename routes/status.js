@@ -20,8 +20,9 @@ router.post('/change', function(req, res) {
 
 // Tell the client when the door changes state
 io.on('connection', function(socket) {
-  door.on_change(function(val) {
-    socket.emit('change', val);
+  door.on_change(function(oldValue, newValue) {
+    console.log('state changed:', oldValue, '->', newValue);
+    socket.emit('change', newValue);
   });
 });
 
