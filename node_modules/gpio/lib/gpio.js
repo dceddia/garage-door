@@ -28,7 +28,6 @@ var _read = function(file, fn) {
 			err.action = 'read';
 			logError(err);
 		} else {
-      if(this.invert) data = 1 - data;
 			if(typeof fn === "function") fn(data);
 			else logMessage("value: ", data);
 		}
@@ -138,6 +137,9 @@ GPIO.prototype.setDirection = function(dir, fn) {
 				// since we manually trigger event for "out" direction when setting value
 				self.valueWatcher = new FileWatcher(self.PATH.VALUE, self.interval, function(val) {
 					val = parseInt(val, 10);
+          if(self.invert) {
+            val = 1 - val;
+          }
 					self.value = val;
 					self.emit("valueChange", val);
 					self.emit("change", val);
@@ -178,6 +180,9 @@ GPIO.prototype.get = function(fn) {
 
 	_read(this.PATH.VALUE, function(val) {
 		val = parseInt(val, 10);
+    if(self.invert) {
+      val = 1 - val;
+    }
 		if(val !== currVal) {
 			self.value = val;
 		}
