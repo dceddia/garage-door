@@ -5,3 +5,4 @@ block content
   i(class='status-icon fa' ng-class='[statusIcon(), doorState]')
   h2 is 
     span(ng-class='doorState') {{ doorState | uppercase }}
+  button(ng-click='changeDoorState()') {{ buttonText() }}
