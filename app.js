@@ -1,4 +1,5 @@
 var express = require('express');
+var session = require('express-session');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -24,6 +25,9 @@ var status = require('./routes/status');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+//sessions
+app.use(session({secret: 'RM2jcxayCYLMxUHv5uiCwMHG+hvtBL6bsyZfTogYlwM='}));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));

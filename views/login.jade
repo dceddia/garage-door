@@ -1,0 +1,9 @@
+extends layout
+
+block content
+	p Please authenticate
+	p(ng-if="errorMsg") {{ errorMsg }}
+	form(class='form')
+		input(type='password', ng-model='data.password')
+		button(ng-click='tryLogin(data.password)') Login
+		button(ng-click='$dismiss()') Cancel

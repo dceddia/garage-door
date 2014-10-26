@@ -1,11 +1,62 @@
-var app = angular.module('GarageMonitor', ['btford.socket-io']);
+var app = angular.module('GarageMonitor', ['btford.socket-io', 'ui.bootstrap']);
 
 app.factory('doorSocket', function(socketFactory) {
   return socketFactory();
 });
 
-app.controller("GarageCtrl", function($scope, GarageDoor) {
+app.controller("LoginCtrl", function($scope, GarageDoor) {
+  $scope.data = {};
+
+  $scope.tryLogin = function(password) {
+    $scope.errorMsg = "";
+
+    GarageDoor.login(password).then(function(res) {
+      console.log('login was successful', res);
+      $scope.$close();
+    }, function(res) {
+      console.log('bad password', password, res);
+      $scope.errorMsg = res.data.error;
+    });
+  };
+});
+
+app.service("LoginService", function($http) {
+  var methods = {
+    login: function(password) {
+      return $http.post('/login', {password: password});
+    }
+  };
+
+  return methods;
+});
+
+app.controller("GarageCtrl", function($scope, GarageDoor, $q, $modal) {
   $scope.doorState = "unknown";
+
+  function promptForLogin() {
+    var theModal = $modal.open({
+      templateUrl: 'login',
+      controller: 'LoginCtrl'
+    });
+
+    return theModal.result;
+  }
+
+  function validateLogin() {
+    var deferred = $q.defer();
+
+    var proceed = function() { console.log('login ok!'); deferred.resolve(); };
+    var halt = function() { console.log('login invalid'); deferred.reject(); };
+
+    // Check the login
+    GarageDoor.checkLogin().then(proceed, function() {
+      // We are not logged in yet. Show the login dialog.
+      // If it succeeds, we're all set.
+      promptForLogin().then(proceed, halt);
+    });
+
+    return deferred.promise;
+  }
 
   $scope.withState = function(state, ifOpen, ifClosed, ifOther) {
     var choice = ifOther;
@@ -37,7 +88,9 @@ app.controller("GarageCtrl", function($scope, GarageDoor) {
   }
 
   $scope.changeDoorState = function() {
-    $scope.withState($scope.doorState, GarageDoor.close, GarageDoor.open, GarageDoor.trigger);
+    validateLogin().then(function() {
+      $scope.withState($scope.doorState, GarageDoor.close, GarageDoor.open, GarageDoor.trigger);
+    });
   };
 
   // When the door state changes, the server will send us an update
@@ -75,6 +128,14 @@ app.service("GarageDoor", function($http, doorSocket) {
 
     trigger: function() {
       return $http.post('/status/change');
+    },
+
+    checkLogin: function() {
+      return $http.post('/check-login');
+    },
+
+    login: function(password) {
+      return $http.post('/login', {password: password});
     }
   };
 

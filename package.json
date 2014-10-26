@@ -24,6 +24,7 @@
     "debug": "~2.0.0",
     "jade": "~1.6.0",
     "gpio": "git://github.com/dceddia/GpiO.git",
-    "q": "~1.0.1"
+    "q": "~1.0.1",
+    "express-session": "~1.9.1"
   }
 }

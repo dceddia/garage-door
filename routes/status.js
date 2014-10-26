@@ -11,8 +11,12 @@ router.get('/', function(req, res) {
 });
 
 router.post('/change', function(req, res) {
-  door.push();
-  res.status(200).end();
+  if(req.session.isLoggedIn) {
+    door.push();
+    res.status(200).end();
+  } else {
+    res.status(403).end();
+  }
 });
 
 

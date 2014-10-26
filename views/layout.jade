@@ -2,9 +2,12 @@ doctype html
 html
   head
     title= title
+    
     link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css')
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css")
     link(rel='stylesheet', href='/stylesheets/entireframework.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
+
     script(src='https://cdn.socket.io/socket.io-1.1.0.js')
     script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular.min.js')
     script(src='/bower/angular-socket-io/socket.min.js')
@@ -12,3 +15,5 @@ html
 
   body(ng-app='GarageMonitor' ng-controller='GarageCtrl')
     block content
+    script(src='/javascripts/bootstrap/ui-bootstrap-custom-0.10.0.min.js')
+    script(src='/javascripts/bootstrap/ui-bootstrap-custom-tpls-0.10.0.min.js')
