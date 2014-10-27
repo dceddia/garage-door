@@ -1,0 +1,15 @@
+- twilio integration
+  - send text message alerts when door state time exceeds thresholds
+  - who to send it to? all numbers? one number?
+  - allow user to respond with 'close' to close the door
+  - maybe allow 'log' to see last few state changes?
+
+- time the garage door, opening and closing. set max times for those states. maybe 1.5x measured time?
+
+{ mongodb maybe:
+
+  - save the log somewhere
+  - save the password somewhere
+  - allow user to enter a password, and load it from the saved place
+  - save sessions?
+}
