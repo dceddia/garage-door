@@ -9,65 +9,78 @@ var jf = require('jsonfile');
 var readline = require('readline-sync');
 
 // Try to load the config.
-var config;
-try {
-  config = jf.readFileSync(__dirname + '/config.json');
-} 
-catch(err) {
-  // If there's no config, stop here
-  if(err.code === 'ENOENT') {
-    console.log("No configuration file found. Please create config.json. See README for the format.");
-    process.exit();
-  }
-
-  // Other errors could be syntax or something. It's useful to see those.
-  throw err;
+var config = require('./config');
+if(!config) {
+  throw "Error loading config file";
+} else {
+  console.log('cfg:', config);
 }
 
-// If the config is missing important info, don't continue
-function requireField(field, json, where) {
-  where = where || "'config.json'";
-  if(!json[field]) {
-    console.log("Field '" + field + "' is missing from " + where + ". It's required. Cannot continue.");
-    process.exit();
-  }
-}
-requireField('open_pin', config);
-requireField('closed_pin', config);
-requireField('relay_pin', config);
-requireField('secrets_file', config);
-
-// Try to read the secrets file
-var secrets;
-try {
-  secrets = jf.readFileSync(config.secrets_file);
-}
-catch(err) {
-  // If there's no secrets file, prompt for answers and create it
-  if(err.code === 'ENOENT') {
-    console.log("No secrets file found. Answer these questions and we'll create one.");
-    console.log("(assuming write access to '" + config.secrets_file + "')");
-
-    secrets = {};
-    secrets.password = readline.question("Choose a password:", {noEchoBack: true});
-    secrets.twilio_sid = readline.question("Enter Twilio Account SID: ");
-    secrets.twilio_auth = readline.question("Enter Twilio Auth Token: ");
-
-    jf.writeFileSync(config.secrets_file, secrets, {}, function(err) {
-      console.log(err);
-    });
-  } else {
-    // Other errors could be syntax or something. It's useful to see those.
-    throw err;
-  }
+if(!config.password) {
+  throw "Password is required in config";
 }
 
-// Verify that secrets contains a password, and Twilio info if necessary
-requireField('password', secrets, "'" + config.secrets_file + "'");
-if(config.send_text_messages) {
-  requireField('twilio_sid', secrets, "'" + config.secrets_file + "'");
-  requireField('twilio_auth', secrets, "'" + config.secrets_file + "'");
+if(config.send_text_messages && (!config.twilio_sid || !config.twilio_auth)) {
+  throw "twilio_sid and twilio_auth are required when send_text_messages is turned on";
 }
+// try {
+//   config = jf.readFileSync(__dirname + '/config.json');
+// } 
+// catch(err) {
+//   // If there's no config, stop here
+//   if(err.code === 'ENOENT') {
+//     console.log("No configuration file found. Please create config.json. See README for the format.");
+//     process.exit();
+//   }
+
+//   // Other errors could be syntax or something. It's useful to see those.
+//   throw err;
+// }
+
+// // If the config is missing important info, don't continue
+// function requireField(field, json, where) {
+//   where = where || "'config.json'";
+//   if(!json[field]) {
+//     console.log("Field '" + field + "' is missing from " + where + ". It's required. Cannot continue.");
+//     process.exit();
+//   }
+// }
+// requireField('open_pin', config);
+// requireField('closed_pin', config);
+// requireField('relay_pin', config);
+// requireField('secrets_file', config);
+
+// // Try to read the secrets file
+// var secrets;
+// try {
+//   secrets = jf.readFileSync(config.secrets_file);
+// }
+// catch(err) {
+//   // If there's no secrets file, prompt for answers and create it
+//   if(err.code === 'ENOENT') {
+//     console.log("No secrets file found. Answer these questions and we'll create one.");
+//     console.log("(assuming write access to '" + config.secrets_file + "')");
+
+//     secrets = {};
+//     secrets.password = readline.question("Choose a password:", {noEchoBack: true});
+//     secrets.twilio_sid = readline.question("Enter Twilio Account SID: ");
+//     secrets.twilio_auth = readline.question("Enter Twilio Auth Token: ");
+
+//     jf.writeFileSync(config.secrets_file, secrets, {}, function(err) {
+//       console.log(err);
+//     });
+//   } else {
+//     // Other errors could be syntax or something. It's useful to see those.
+//     throw err;
+//   }
+// }
+
+// // Verify that secrets contains a password, and Twilio info if necessary
+// requireField('password', secrets, "'" + config.secrets_file + "'");
+// if(config.send_text_messages) {
+//   requireField('twilio_sid', secrets, "'" + config.secrets_file + "'");
+//   requireField('twilio_auth', secrets, "'" + config.secrets_file + "'");
+// }
 
 var app = express();
 
