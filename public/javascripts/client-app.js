@@ -88,7 +88,14 @@ app.controller("GarageCtrl", function($scope, GarageDoor, $q, $modal) {
   };
 
   $scope.buttonText = function() {
-    return $scope.withState($scope.doorState, "Close It", "Open It", "Trigger It");
+    var direction = $scope.withState($scope.doorState, "down", "up", "");
+    var leftArrow = "<i class='glyphicon glyphicon-arrow-" + direction + " arrow arrow-left'></i>";
+    var rightArrow = "<i class='glyphicon glyphicon-arrow-" + direction + " arrow arrow-right'></i>";
+    var openIt = leftArrow + " OPEN IT " + rightArrow;
+    var closeIt = leftArrow + " CLOSE IT " + rightArrow;
+    var triggerIt = leftArrow + " TRIGGER IT " + rightArrow;
+
+    return $scope.withState($scope.doorState, closeIt, openIt, triggerIt);
   };
 
   $scope.buttonClass = function() {
@@ -148,4 +155,10 @@ app.service("GarageDoor", function($http, doorSocket) {
   };
 
   return methods;
+});
+
+app.filter("sanitize", function($sce) {
+  return function(htmlCode) {
+    return $sce.trustAsHtml(htmlCode);
+  };
 });

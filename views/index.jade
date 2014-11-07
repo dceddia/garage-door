@@ -1,13 +1,12 @@
 extends layout
 
 block content
-  .sign-edge
-    .sign-edge-line
-      .sign
-        h1 GARAGE DOOR
-        i(ng-class='statusIcon()')
-        i(class='status-icon spinner fa fa-refresh fa-spin' ng-class='doorState')
-        h2(class='door-state') IS 
-          span(ng-class='doorState') {{ doorState | uppercase }}
-        .button-container
-          button(ng-click='changeDoorState()', class='btn', ng-class='buttonClass()') {{ buttonText() | uppercase }}
+  .sign-edge-line
+    .sign
+      h1 GARAGE DOOR
+      i(ng-class='statusIcon()')
+      i(class='status-icon spinner fa fa-refresh fa-spin' ng-class='doorState')
+      h2(class='door-state') IS 
+        span(ng-class='doorState') {{ doorState | uppercase }}
+      .button-container
+        button(ng-click='changeDoorState()', class='btn', ng-class='buttonClass()', ng-bind-html='buttonText() | sanitize')
