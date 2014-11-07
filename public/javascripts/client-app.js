@@ -76,7 +76,15 @@ app.controller("GarageCtrl", function($scope, GarageDoor, $q, $modal) {
   };
 
   $scope.statusIcon = function() {
-    return $scope.withState($scope.doorState, "fa-warning", "fa-check", "fa-question");
+    var icons = {
+      open    : 'fa fa-warning',
+      opening : 'fa fa-long-arrow-up',
+      closed  : 'glyphicon glyphicon-ok',
+      closing : 'fa fa-long-arrow-down',
+      unknown : 'fa fa-question'
+    }
+
+    return $scope.doorState + ' status-icon ' + icons[$scope.doorState];
   };
 
   $scope.buttonText = function() {

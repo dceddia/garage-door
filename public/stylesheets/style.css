@@ -1,14 +1,72 @@
+@font-face {
+  font-family: "Roadway";
+  src: url('/fonts/roadway.otf') format('opentype');
+}
+
 body {
   text-align: center;
+  font-family: "Roadway";
+  color: #fff;
+  text-shadow: 0 0 1px #000;
+}
+
+.sign-edge {
+  background: rgb(11, 107, 93);
+  width: 480px;
+  border-radius: 36px;
+  padding: 10px;
+  margin: 0 auto;
+}
+
+.sign-edge-line {
+  background: #fff;
+  border-radius: 28px;
+  padding: 10px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.7);
+}
+
+.sign {
+  width: 100%;
+  background: rgb(11, 107, 93);
+  border-radius: 20px;
+  padding-top: 1.5em;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.7);
+}
+
+.button-container {
+    width: 480px;
+    position: relative;
+    left: -20px;
+    top: 20px;
+    padding: 0 10px 10px 10px;
+    background: rgb(242, 162, 0);
+    margin-top: 2em;
+    border-bottom-left-radius: 36px;
+    border-bottom-right-radius: 36px;
+}
+
+.button-container button {
+  background: rgb(242, 162, 0);
+  border:  none;
+  width:  100%;
+  height: 2em;
+  border-bottom-left-radius: 28px;
+  border-bottom-right-radius: 28px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  box-shadow: inset 0 0 0 10px #222;
+  font-size: 40px;
+  color: #222;
+}
+
+h1 {
+  font-size: 80px;
+  margin-top: 0;
+  text-shadow: 0 0 2px #000;
 }
 
 .status-icon {
-  font-size: 80px;
-  padding: 30px;
-  width: 120px;
-  height: 120px;
-  border: 1px solid #555;
-  line-height: 120px;
+  font-size: 150px;
 }
 
 .unknown {
@@ -24,9 +82,36 @@ body {
 }
 
 .status-icon.closed {
-  padding-left: 25px;
-  padding-left: 35px;
+  padding-left: 0.1em;
+  text-shadow: 0px 5px #444, 5px 0px #444, 0px -5px #444, -5px 0px #444;
 }
+
+.spinner {
+  display: none;
+}
+
+.spinner.opening,
+.spinner.closing {
+  display: inline;
+  color: #ccc;
+  font-size: 80px;
+}
+
+.door-state {
+  font-size: 60px;
+}
+
+.door-state > span {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/***** key rule: *****/
+.fa-spin {
+  -webkit-transform-origin: 50% calc(50% - .5px);
+  transform-origin: 50% calc(50% - .5px);
+}
+
 
 .btn {
   margin: 0;

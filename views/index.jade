@@ -1,8 +1,13 @@
 extends layout
 
 block content
-  h1 Garage Door
-  i(class='status-icon fa' ng-class='[statusIcon(), doorState]')
-  h2 is 
-    span(ng-class='doorState') {{ doorState | uppercase }}
-  button(ng-click='changeDoorState()', class='btn', ng-class='buttonClass()') {{ buttonText() }}
+  .sign-edge
+    .sign-edge-line
+      .sign
+        h1 GARAGE DOOR
+        i(ng-class='statusIcon()')
+        i(class='status-icon spinner fa fa-refresh fa-spin' ng-class='doorState')
+        h2(class='door-state') IS 
+          span(ng-class='doorState') {{ doorState | uppercase }}
+        .button-container
+          button(ng-click='changeDoorState()', class='btn', ng-class='buttonClass()') {{ buttonText() | uppercase }}

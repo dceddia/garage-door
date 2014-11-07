@@ -14,7 +14,7 @@ var timeBeforeAlert = {
 };
 
 router.get('/', function(req, res) {
-  res.status(200).end(door.state() + '');
+  res.status(200).end(door.state());
 });
 
 router.post('/change', function(req, res) {
