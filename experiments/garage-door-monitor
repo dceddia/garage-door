@@ -1,0 +1,40 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:		garage-door
+# Required-Start:	$syslog
+# Required-Stop:	$syslog
+# Default-Start:	2 3 4 5
+# Default-Stop:		
+# Short-Description:	Garage Door monitoring and control using Raspberry Pi
+### END INIT INFO
+
+
+case "$1" in
+  start)
+	log_daemon_msg "Starting Garage Door" "garage-door" || true
+	if start-stop-daemon --start --quiet --oknodo --pidfile /var/run/garage-door.pid --exec /home/pi/hall.rb; then
+	    log_end_msg 0 || true
+	else
+	    log_end_msg 1 || true
+	fi
+	;;
+  stop)
+	log_daemon_msg "Stopping Garage Door" "garage-door" || true
+	if start-stop-daemon --stop --quiet --oknodo --pidfile /var/run/garage-door.pid; then
+	    log_end_msg 0 || true
+	else
+	    log_end_msg 1 || true
+	fi
+	;;
+
+  status)
+	grep 'garage-door' /var/log/messages | tail -n 5
+	;;
+
+  *)
+	log_action_msg "Usage: /etc/init.d/garage-door {start|stop|status}" || true
+	exit 1
+esac
+
+exit 0
