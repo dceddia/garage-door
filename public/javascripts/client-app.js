@@ -81,6 +81,7 @@ app.controller("GarageCtrl", function($scope, GarageDoor, $q, $modal) {
       opening : 'fa fa-long-arrow-up',
       closed  : 'glyphicon glyphicon-ok',
       closing : 'fa fa-long-arrow-down',
+      stopped : 'fa fa-pause',
       unknown : 'fa fa-question'
     }
 
