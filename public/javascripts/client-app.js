@@ -90,13 +90,23 @@ app.controller("GarageCtrl", function($scope, GarageDoor, $q, $modal) {
 
   $scope.buttonText = function() {
     var direction = $scope.withState($scope.doorState, "down", "up", "");
+    if($scope.doorState === 'stopped') {
+      direction = 'down';
+    }
+
     var leftArrow = "<i class='glyphicon glyphicon-arrow-" + direction + " arrow arrow-left'></i>";
     var rightArrow = "<i class='glyphicon glyphicon-arrow-" + direction + " arrow arrow-right'></i>";
-    var openIt = leftArrow + " OPEN IT " + rightArrow;
-    var closeIt = leftArrow + " CLOSE IT " + rightArrow;
-    var triggerIt = leftArrow + " TRIGGER IT " + rightArrow;
 
-    return $scope.withState($scope.doorState, closeIt, openIt, triggerIt);
+    var options = {
+      open    : leftArrow + " CLOSE IT " + rightArrow,
+      opening : " CANCEL ",
+      closed  : leftArrow + " OPEN IT " + rightArrow,
+      closing : " CANCEL ",
+      stopped : leftArrow + " CLOSE IT " + rightArrow,
+      unknown : leftArrow + " MYSTERY " + rightArrow
+    };
+
+    return options[$scope.doorState];
   };
 
   $scope.buttonClass = function() {

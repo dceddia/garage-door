@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GARAGE</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link href="http://fonts.googleapis.com/css?family=Cantora+One" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.socket.io/socket.io-1.1.0.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular.min.js"></script>
+    <script src="/bower/angular-socket-io/socket.min.js"></script>
+    <script src="/javascripts/client-app.js"></script>
+  </head>
+  <body ng-app="GarageMonitor" ng-controller="GarageCtrl">
+    <div class="sign-edge-line">
+      <div class="sign">
+        <h1>GARAGE DOOR</h1>
+        <div class="status-icon-window"><i ng-class="statusIcon()"></i><i ng-class="statusIcon()" class="offscreen"></i></div>
+        <h2 class="door-state">IS <span ng-class="doorState">{{ doorState | uppercase }}</span></h2>
+        <div class="button-container">
+          <button ng-click="changeDoorState()" ng-class="buttonClass()" ng-bind-html="buttonText() | sanitize" class="btn"></button>
+        </div>
+      </div>
+    </div>
+    <script src="/javascripts/bootstrap/ui-bootstrap-custom-0.10.0.min.js"></script>
+    <script src="/javascripts/bootstrap/ui-bootstrap-custom-tpls-0.10.0.min.js"></script>
+  </body>
+</html>

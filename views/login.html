@@ -1,0 +1,7 @@
+<p>Please authenticate</p>
+<p ng-if="errorMsg">{{ errorMsg }}</p>
+<form class="form">
+  <input type="password" ng-model="data.password">
+  <button ng-click="tryLogin(data.password)">Login</button>
+  <button ng-click="$dismiss()">Cancel</button>
+</form>

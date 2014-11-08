@@ -98,8 +98,9 @@ var status = require('./routes/status');
 
 
 // view engine setup
+app.engine('html', require('./html_engine'));
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'html');
 
 //sessions
 app.use(session({secret: 'RM2jcxayCYLMxUHv5uiCwMHG+hvtBL6bsyZfTogYlwM='}));
@@ -147,6 +148,10 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
+
+if (app.get('env') === 'development') {
+  app.locals.pretty = true;
+}
 
 
 module.exports = app;
