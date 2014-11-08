@@ -133,11 +133,12 @@ h1 {
 
 .status-icon-window:before {
   content: '';
-  height: 30px;
+  height: 20px;
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
+  z-index: 2;
   background-image: 
     -webkit-gradient(
       linear, 
@@ -149,7 +150,7 @@ h1 {
 
 .status-icon-window:after {
   content: '';
-  height: 30px;
+  height: 20px;
   position: absolute;
   left: 0;
   bottom: 0;
