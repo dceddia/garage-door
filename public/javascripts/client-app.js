@@ -1,7 +1,9 @@
 var app = angular.module('GarageMonitor', ['btford.socket-io', 'ui.bootstrap']);
 
 app.factory('doorSocket', function(socketFactory) {
-  return socketFactory();
+  return socketFactory({
+    ioSocket: io.connect('https://garage.dceddia.com', {secure: true})
+  });
 });
 
 app.controller("LoginCtrl", function($scope, GarageDoor) {
