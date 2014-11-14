@@ -7,7 +7,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var jf = require('jsonfile');
 var readline = require('readline-sync');
-var twilio = require('twilio');
 var http = require('http');
 var https = require('https');
 var fs = require('fs');
@@ -27,24 +26,6 @@ if(!config.password) {
 
 if(config.send_text_messages && (!config.twilio_sid || !config.twilio_auth || !config.twilio_number)) {
   throw "twilio_sid, twilio_auth, and twilio_number are required when send_text_messages is turned on";
-}
-
-if(config.send_text_messages) {
-  var client = new twilio.RestClient(config.twilio_sid, config.twilio_auth);
-  /*
-  client.sms.messages.create({
-    to:   '+15083311496',
-    from: config.twilio_number,
-    body: 'hi from garage door'
-  },
-  function(err, msg) {
-    if(!err) {
-      console.log('success! sid:', msg.sid);
-    } else {
-      console.log('There was an error:', err);
-    }
-  });
-  */
 }
 
 var app = express();

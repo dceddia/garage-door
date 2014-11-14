@@ -1,16 +1,20 @@
 var express = require('express');
 var router = express.Router();
 var door = require('door-ctrl')();
+var config = require('../config');
+var twilio = require('twilio');
 
 var timers = {};
-var maximumOpenTime = 3000;
+
+var SECONDS = 1000;
+var MINUTES = 60*SECONDS;
 
 var timeBeforeAlert = {
-  open: 3000,
-  closing: 6000,
-  opening: 6000,
-  stopped: 3000,
-  unknown: 2000
+  open:    5 * MINUTES,
+  closing: 5 * MINUTES,
+  opening: 5 * MINUTES,
+  stopped: 5 * MINUTES,
+  unknown: 5 * MINUTES
 };
 
 router.get('/', function(req, res) {
@@ -36,10 +40,33 @@ function stopTimer(timerName) {
   timers[timerName] = null;
 }
 
+function sendAlert(msg) {
+  if(config.send_text_messages) {
+    var client = new twilio.RestClient(config.twilio_sid, config.twilio_auth);
+
+    // Send an alert to every phone number we know about
+    if(Object.prototype.toString.call(config.contacts) === '[object Array]') {
+      config.contacts.forEach(function(contact) {
+        client.sms.messages.create({
+          to:   contact.number,
+          from: config.twilio_number,
+          body: msg
+        },
+        function(err, msg) {
+          if(!err) {
+            console.log('Sent text message w/ sid:', msg.sid);
+          } else {
+            console.log('Error sending text message:', err);
+          }
+        });
+      });
+    }
+  }
+}
+
 // Tell the client when the door changes state
 io.on('connection', function(socket) {
   door.on('change', function(oldValue, newValue) {
-    console.log('Told client', socket.id, 'that state changed:', oldValue, '->', newValue);
     socket.emit('change', newValue);
   });
 });
@@ -58,6 +85,7 @@ door.on('change', function(oldValue, newValue) {
   // They have predefined limits on how long they're allowed to last before alerts go out
   timers[newValue] = startTimer(function() {
     console.log('door in', newValue, 'state too long!');
+    sendAlert('Garage door has been ' + newValue + ' for more than 5 minutes.');
   }, timeBeforeAlert[newValue]);
 
   // End the timer for the previous state
