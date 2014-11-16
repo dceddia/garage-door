@@ -4,6 +4,7 @@ var door = require('door-ctrl')();
 var config = require('../config');
 var twilio = require('twilio');
 var phoneValidator = require('../lib/phone_validator');
+var responder = require('../lib/door_responder')(door, phoneValidator);
 
 var timers = {};
 
@@ -32,13 +33,20 @@ router.post('/change', function(req, res) {
 
     if(phoneValidator.validate(req.body.From)) {
       console.log('Phone number is authorized.');
+
+      responder.respondTo(responder.sanitize(req.body.Body), function(message) {
+        var resp = new twilio.TwimlResponse();
+        resp.sms(smsResponse);
+        res.status(200).type('application/xml').end(resp.toString());
+      });
     } else {
       console.log('Warning! Phone number is NOT authorized!');
+      res.status(200).end();
     }
   } else {
     console.log('Request NOT from Twilio.');
+    res.status(403).end();
   }
-  res.status(200).end();
 });
 
 // TODO: Maybe these could be conditional based on a setting

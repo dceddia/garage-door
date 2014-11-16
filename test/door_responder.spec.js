@@ -89,6 +89,23 @@ describe("command: close", function() {
 	});
 });
 
+describe("command: stop OR cancel", function() {
+	it("responds with a message when the door is closed", function() {
+		expectInvalidCommand(['stop'], 'closed');
+		expectInvalidCommand(['cancel'], 'closed');
+	});
+
+	it("stops the door if the door is opening", function() {
+		expectActivationWithoutResponse(['stop'], 'opening');
+		expectActivationWithoutResponse(['cancel'], 'opening');
+	});
+
+	it("reverses the door if the door is closing", function() {
+		expectActivationWithoutResponse(['stop'], 'closing');
+		expectActivationWithoutResponse(['cancel'], 'closing');
+	});
+});
+
 describe("command: status", function() {
 	it("returns the current door status", function() {
 		expectResponse(['status'], 'open', 'Door is OPEN');
@@ -98,26 +115,11 @@ describe("command: status", function() {
 
 describe("command: help", function() {
 	it("returns help text", function() {
-		expectResponse(['help'], '', 'Available commands: open, close, status, help, authorize');
+		expectResponse(['help'], '', 'Available commands: open, close, status, stop, cancel, help, authorize');
 	});
 });
 
-describe("isPhoneNumber", function() {
-	it("returns true for +12223334444", function() {
-		expect(responderLib.isPhoneNumber('+12223334444')).to.be(true);
-	});
-	it("returns false for 12223334444", function() {
-		expect(responderLib.isPhoneNumber('12223334444')).to.be(false);
-	});
-	it("returns false for 111-222-3333", function() {
-		expect(responderLib.isPhoneNumber('111-222-3333')).to.be(false);
-	});
-	it("returns false for (111) 222-3333", function() {
-		expect(responderLib.isPhoneNumber('(111) 222-3333')).to.be(false);
-	});
-});
-
-describe("authorize", function() {
+describe("command: authorize", function() {
 	it("returns a confirmation message if authorization succeeds", function() {
 		expectResponse(['authorize', '+12223334444'], '', 'Phone number +12223334444 is now authorized.');
 	});
@@ -138,5 +140,34 @@ describe("authorize", function() {
 		mockPhoneValidator.authorize = function() { authorized = true; };
 		expectResponse(['authorize', '12223334444'], '', 'Invalid command. Expected phone number in the format +1xxxxxxxxxx');
 		expect(authorized).to.be(false);
+	});
+});
+
+describe("isPhoneNumber", function() {
+	it("returns true for +12223334444", function() {
+		expect(responder.isPhoneNumber('+12223334444')).to.be(true);
+	});
+	it("returns false for 12223334444", function() {
+		expect(responder.isPhoneNumber('12223334444')).to.be(false);
+	});
+	it("returns false for 111-222-3333", function() {
+		expect(responder.isPhoneNumber('111-222-3333')).to.be(false);
+	});
+	it("returns false for (111) 222-3333", function() {
+		expect(responder.isPhoneNumber('(111) 222-3333')).to.be(false);
+	});
+});
+
+describe("sanitize", function() {
+	it("returns an array of arguments", function() {
+		expect(responder.sanitize("activate +1234")).to.eql(['activate', '+1234']);
+	});
+
+	it("returns everything in lower case", function() {
+		expect(responder.sanitize('Open')).to.eql(['open']);
+	});
+
+	it("removes multiple spaces", function() {
+		expect(responder.sanitize("activate    +1234")).to.eql(['activate', '+1234']);
 	});
 });
