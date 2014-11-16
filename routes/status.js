@@ -3,6 +3,7 @@ var router = express.Router();
 var door = require('door-ctrl')();
 var config = require('../config');
 var twilio = require('twilio');
+var phoneValidator = require('../lib/phone_validator');
 
 var timers = {};
 
@@ -17,17 +18,27 @@ var timeBeforeAlert = {
   unknown: 5 * MINUTES
 };
 
+phoneValidator.loadPhones(config.phones);
+
 router.get('/', function(req, res) {
   res.status(200).end(door.state());
 });
 
 router.post('/change', function(req, res) {
-  if(req.session.isLoggedIn) {
-    door.activate();
-    res.status(200).end();
+  if(twilio.validateExpressRequest(req, config.twilio_auth)) {
+    console.log('Request is from Twilio.');
+    console.log('  From number:', req.body.From);
+    console.log('  Message:', req.body.Body);
+
+    if(phoneValidator.validate(req.body.From)) {
+      console.log('Phone number is authorized.');
+    } else {
+      console.log('Warning! Phone number is NOT authorized!');
+    }
   } else {
-    res.status(403).end();
+    console.log('Request NOT from Twilio.');
   }
+  res.status(200).end();
 });
 
 // TODO: Maybe these could be conditional based on a setting

@@ -55,8 +55,23 @@ describe("GarageCtrl", function() {
 
 	describe("statusIcon", function() {
 		it("should be set for 'open'", function() {
-			scope.doorState = 'open'
-			expect(scope.statusIcon()).toEqual('fa-warning');
+			scope.doorState = 'open';
+			var classes = scope.statusIcon().split(' ');
+			expect(classes.length).toBe(4);
+			expect(classes).toContain('status-icon');
+			expect(classes).toContain('open');
+			expect(classes).toContain('fa');
+			expect(classes).toContain('fa-warning');
+		});
+
+		it("should be set for 'closed'", function() {
+			scope.doorState = 'closed';
+			var classes = scope.statusIcon().split(' ');
+			expect(classes.length).toBe(4);
+			expect(classes).toContain('status-icon');
+			expect(classes).toContain('closed');
+			expect(classes).toContain('glyphicon');
+			expect(classes).toContain('glyphicon-ok');
 		});
 	});
 });
