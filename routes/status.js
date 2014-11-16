@@ -36,8 +36,9 @@ router.post('/change', function(req, res) {
 
       responder.respondTo(responder.sanitize(req.body.Body), function(message) {
         var resp = new twilio.TwimlResponse();
-        resp.sms(smsResponse);
-        res.status(200).type('application/xml').end(resp.toString());
+        resp.sms(message);
+        res.status(200).type('application/xml');
+        res.end(resp.toString());
       });
     } else {
       console.log('Warning! Phone number is NOT authorized!');

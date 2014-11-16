@@ -11,6 +11,7 @@ var http = require('http');
 var https = require('https');
 var fs = require('fs');
 var forceSSL = require('express-force-ssl');
+var errorHandler = require('errorhandler');
 
 // Try to load the config.
 var config = require('./config');
@@ -79,6 +80,7 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
+    app.use(errorHandler({showStack: true, dumpExceptions: true}));
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
