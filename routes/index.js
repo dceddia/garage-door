@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var config = require('../config');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -11,7 +12,7 @@ router.get('/login', function(req, res) {
 });
 
 router.post('/login', function(req, res) {
-	if(req.param('password') == 'secret') {
+	if(req.param('password') == config.password) {
 		req.session.isLoggedIn = true;
 		res.status(200).end();
 	} else {
