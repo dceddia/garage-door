@@ -113,9 +113,9 @@ describe("command: status", function() {
 	});
 });
 
-describe("command: help", function() {
+describe("command: ?", function() {
 	it("returns help text", function() {
-		expectResponse(['help'], '', 'Available commands: open, close, status, stop, cancel, help, authorize');
+		expectResponse(['?'], '', 'Available commands: open, close, status, stop, cancel, help, authorize');
 	});
 });
 
