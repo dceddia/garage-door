@@ -5,6 +5,7 @@ var config = require('../config');
 var twilio = require('twilio');
 var phoneValidator = require('../lib/phone_validator');
 var responder = require('../lib/door_responder')(door, phoneValidator);
+var alerting = require('../lib/alerting');
 
 phoneValidator.loadPhones(config.phones);
 
