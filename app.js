@@ -21,10 +21,6 @@ if(!config) {
   console.log('cfg:', config);
 }
 
-if(!config.password) {
-  throw "Password is required in config";
-}
-
 if(config.send_text_messages && (!config.twilio_sid || !config.twilio_auth || !config.twilio_number)) {
   throw "twilio_sid, twilio_auth, and twilio_number are required when send_text_messages is turned on";
 }
